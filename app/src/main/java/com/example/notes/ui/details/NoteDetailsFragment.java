@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentResultListener;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
+import com.example.notes.ui.list.NotesListActivity;
 import com.example.notes.ui.list.NotesListFragment;
 
 public class NoteDetailsFragment extends Fragment {
@@ -40,16 +41,6 @@ public class NoteDetailsFragment extends Fragment {
 
         noteTitle = view.findViewById(R.id.note_title);
         noteText = view.findViewById(R.id.note_text);
-
-        getParentFragmentManager()
-                .setFragmentResultListener(NotesListFragment.NOTE_SELECTED, getViewLifecycleOwner(), new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        Note note = result.getParcelable(NotesListFragment.SELECTED_NOTE_BUNDLE);
-
-                        updateNote(note);
-                    }
-                });
 
         Bundle arguments = getArguments();
 
