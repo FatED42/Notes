@@ -2,17 +2,18 @@ package com.example.notes.ui.details;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
-import com.example.notes.ui.list.NotesListActivity;
-import com.example.notes.ui.list.NotesListFragment;
+import com.example.notes.ui.NavDrawable;
 
 public class NoteDetailsFragment extends Fragment {
 
@@ -29,7 +30,7 @@ public class NoteDetailsFragment extends Fragment {
     }
 
     private TextView noteTitle;
-    private TextView noteText;
+    private EditText noteText;
 
     public NoteDetailsFragment() {
         super(R.layout.fragment_note_details);
@@ -39,8 +40,28 @@ public class NoteDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Toolbar toolbar = view.findViewById(R.id.note_details_toolbar);
+        if (requireActivity() instanceof NavDrawable) {
+            ((NavDrawable) requireActivity()).setAppBar(toolbar);
+        }
+
         noteTitle = view.findViewById(R.id.note_title);
         noteText = view.findViewById(R.id.note_text);
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.save_note:
+                    Toast.makeText(requireContext(), "Note saved", Toast.LENGTH_LONG).show();
+                    return true;
+                case R.id.delete_note:
+                    Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_LONG).show();
+                    return true;
+                case R.id.share_note:
+                    Toast.makeText(requireContext(), "Note shared", Toast.LENGTH_LONG).show();
+                    return true;
+            }
+            return false;
+        });
 
         Bundle arguments = getArguments();
 

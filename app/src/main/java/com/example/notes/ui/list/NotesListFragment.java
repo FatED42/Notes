@@ -1,20 +1,22 @@
 package com.example.notes.ui.list;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
 import com.example.notes.domain.NotesRepoImpl;
+import com.example.notes.ui.NavDrawable;
 
 import java.util.List;
 
@@ -44,7 +46,20 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Toolbar toolbar = view.findViewById(R.id.notes_list_toolbar);
+        if (requireActivity() instanceof NavDrawable) {
+            ((NavDrawable) requireActivity()).setAppBar(toolbar);
+        }
+
         container = view.findViewById(R.id.container);
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.add_note) {
+                Toast.makeText(requireContext(), "Note added", Toast.LENGTH_LONG).show();
+                return true;
+            }
+            return false;
+        });
 
         presenter.requestNotes();
     }

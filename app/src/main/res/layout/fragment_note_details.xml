@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/note_details_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_note_details"
+            app:title="@string/note_details" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <TextView
         android:id="@+id/note_title"
         android:layout_width="@dimen/zero_dim"
@@ -14,19 +30,20 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         tools:text="Very important note" />
 
-    <TextView
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/note_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dim"
         android:layout_margin="@dimen/margin"
+        android:gravity="start"
+        android:inputType="textMultiLine"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/note_title"
         tools:text="My very important note text with very important information of my very very important note" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
