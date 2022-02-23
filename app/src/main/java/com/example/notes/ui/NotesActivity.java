@@ -29,7 +29,7 @@ public class NotesActivity extends AppCompatActivity implements NavDrawable {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_settings:
-                    Toast.makeText(navigationView.getContext(), "Settings", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NotesActivity.this, "Settings", Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.nav_about:
                     getSupportFragmentManager()

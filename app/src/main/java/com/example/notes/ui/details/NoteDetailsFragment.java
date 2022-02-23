@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
+import com.example.notes.ui.AlertDialogFragment;
 import com.example.notes.ui.NavDrawable;
 
 public class NoteDetailsFragment extends Fragment {
@@ -54,7 +55,7 @@ public class NoteDetailsFragment extends Fragment {
                     Toast.makeText(requireContext(), "Note saved", Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.delete_note:
-                    Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_LONG).show();
+                    new AlertDialogFragment().show(getParentFragmentManager(), "AlertDialogFragment");
                     return true;
                 case R.id.share_note:
                     Toast.makeText(requireContext(), "Note shared", Toast.LENGTH_LONG).show();
