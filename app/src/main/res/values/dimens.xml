@@ -2,4 +2,8 @@
 <resources>
     <dimen name="margin">8dp</dimen>
     <dimen name="zero_dim">0dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="nav_header_margin">16dp</dimen>
+    <dimen name="logo_size">100dp</dimen>
+    <dimen name="about_icons_size">70dp</dimen>
 </resources>
