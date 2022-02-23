@@ -35,7 +35,6 @@ public class NotesActivity extends AppCompatActivity implements NavDrawable {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.notes_container, new AboutFragment())
-                            .addToBackStack("")
                             .commit();
                     return true;
             }
@@ -43,21 +42,13 @@ public class NotesActivity extends AppCompatActivity implements NavDrawable {
         });
 
         getSupportFragmentManager().setFragmentResultListener(NotesListFragment.NOTE_SELECTED, this, (requestKey, result) -> {
-
             Note note = result.getParcelable(NotesListFragment.SELECTED_NOTE_BUNDLE);
-
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.notes_container, NoteDetailsFragment.newInstance(note))
                     .addToBackStack("")
                     .commit();
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        getSupportFragmentManager()
-                .popBackStack();
     }
 
     @Override

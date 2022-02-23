@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/text_logo"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/zero_dim"
         android:layout_height="wrap_content"
         android:background="@color/purple_500"
         android:gravity="center"
@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/made_by"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/zero_dim"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
         android:gravity="center"
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"
         android:text="@string/send_me_email"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintBottom_toBottomOf="@id/emailBtn"
         app:layout_constraintStart_toEndOf="@id/emailBtn"
         app:layout_constraintTop_toTopOf="@id/emailBtn" />

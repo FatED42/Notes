@@ -17,4 +17,11 @@
     <string name="github_repository">GitHub repository</string>
     <string name="send_me_email">Send me email</string>
     <string name="send_feedback">Send feedback</string>
+    <string name="dev_email">cjkrol43@gmail.com</string>
+    <string name="dev_github">https://github.com/FatED42/Notes</string>
+    <string name="dialog_delete_title">Delete this note?</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="note_deleted">Note deleted</string>
+    <string name="note_not_deleted">Note not deleted</string>
 </resources>
