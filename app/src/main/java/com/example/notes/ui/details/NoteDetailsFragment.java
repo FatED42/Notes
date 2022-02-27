@@ -47,7 +47,7 @@ public class NoteDetailsFragment extends Fragment {
             ((NavDrawable) requireActivity()).setAppBar(toolbar);
         }
 
-        Note note = requireArguments().getParcelable(ARG_NOTE);
+        Note note = getArguments().getParcelable(ARG_NOTE);
 
         noteTitle = view.findViewById(R.id.note_title_text);
         noteTitle.setText(note.getTitle());
@@ -65,7 +65,6 @@ public class NoteDetailsFragment extends Fragment {
 
                 getParentFragmentManager()
                         .setFragmentResult(KEY_REQUEST, bundle);
-
             }
             return false;
         });

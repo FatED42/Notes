@@ -64,10 +64,11 @@ public class NotesListFragment extends Fragment implements NotesListView {
         adapter.setOnNoteClicked(new NotesRVAdapter.OnNoteClicked() {
             @Override
             public void onNoteClicked(Note note) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(SELECTED_NOTE_BUNDLE, note);
                 getParentFragmentManager()
-                        .setFragmentResult(NOTE_SELECTED, bundle);
+                        .beginTransaction()
+                        .replace(R.id.notes_container, NoteDetailsFragment.newInstance(presenter.getSelectedNote()))
+                        .addToBackStack("")
+                        .commit();
             }
 
             @Override
