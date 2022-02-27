@@ -13,6 +13,7 @@
         <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_about.xml" value="0.3282407407407407" />
         <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_note_details.xml" value="0.2324074074074074" />
         <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_notes_list.xml" value="0.3282407407407407" />
+        <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/layout/item_note.xml" value="0.3282407407407407" />
         <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/layout/navigation_header.xml" value="0.3282407407407407" />
         <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/menu/menu_nav_drawer.xml" value="0.3282407407407407" />
         <entry key="..\:/Users/cjkro/AndroidStudioProjects/Notes/app/src/main/res/menu/menu_note_details.xml" value="0.3282407407407407" />
@@ -20,7 +21,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

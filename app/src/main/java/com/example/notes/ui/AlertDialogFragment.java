@@ -18,12 +18,12 @@ public class AlertDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         return new AlertDialog.Builder(requireContext())
-                .setTitle("Delete this note?")
+                .setTitle(R.string.dialog_delete_title)
                 .setIcon(R.drawable.app_logo)
-                .setPositiveButton("Yes", (dialogInterface, i) ->
-                        Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_SHORT).show())
-                .setNegativeButton("No", (dialogInterface, i) ->
-                        Toast.makeText(requireContext(), "Note not deleted", Toast.LENGTH_SHORT).show())
+                .setPositiveButton(R.string.button_yes, (dialogInterface, i) ->
+                        Toast.makeText(requireContext(), R.string.note_deleted, Toast.LENGTH_SHORT).show())
+                .setNegativeButton(R.string.button_no, (dialogInterface, i) ->
+                        Toast.makeText(requireContext(), R.string.note_not_deleted, Toast.LENGTH_SHORT).show())
                 .create();
     }
 

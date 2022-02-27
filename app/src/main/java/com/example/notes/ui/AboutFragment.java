@@ -1,6 +1,5 @@
 package com.example.notes.ui;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +17,8 @@ import com.example.notes.R;
 
 public class AboutFragment extends Fragment {
 
-    ImageButton gitHubBtn;
-    ImageButton emailBtn;
+    private ImageButton gitHubBtn;
+    private ImageButton emailBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,23 +44,18 @@ public class AboutFragment extends Fragment {
 
     private void emailBtnClicked() {
         emailBtn.setOnClickListener(v -> {
-            String[] email = {"cjkrol43@gmail.com"};
+            String[] email = {getString(R.string.dev_email)};
             Uri uri = Uri.parse("mailto:");
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, uri);
             emailIntent.putExtra(Intent.EXTRA_EMAIL, email);
-            try {
-                startActivity(Intent.createChooser(emailIntent, getString(R.string.send_feedback)));
-                Log.i("email", "Finished sending email...");
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(getContext(), "There is no email client installed",
-                        Toast.LENGTH_SHORT).show();
-            }
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_feedback)));
+            Log.i("email", "Finished sending email...");
         });
     }
 
     private void gitHubBtnClicked() {
         gitHubBtn.setOnClickListener(v -> {
-            String url = "https://github.com/FatED42/Notes";
+            String url = getString(R.string.dev_github);
             Uri uri = Uri.parse(url);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);

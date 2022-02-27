@@ -4,17 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
+import com.example.notes.domain.NotesRepo;
 import com.example.notes.domain.NotesRepoImpl;
 import com.example.notes.ui.NavDrawable;
 
@@ -25,9 +26,9 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public static final String NOTE_SELECTED = "NOTE_SELECTED";
     public static final String SELECTED_NOTE_BUNDLE = "SELECTED_NOTE_BUNDLE";
 
-    private LinearLayout container;
-
+    private NotesRepo repo = new NotesRepoImpl();
     private NotesListPresenter presenter;
+    private RecyclerView list;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,12 +47,12 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        list = view.findViewById(R.id.list);
+
         Toolbar toolbar = view.findViewById(R.id.notes_list_toolbar);
         if (requireActivity() instanceof NavDrawable) {
             ((NavDrawable) requireActivity()).setAppBar(toolbar);
         }
-
-        container = view.findViewById(R.id.container);
 
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_note) {
@@ -66,28 +67,21 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
     @Override
     public void showNotes(List<Note> notes) {
-        for (Note note : notes) {
-            View itemView = getLayoutInflater().inflate(R.layout.item_note, container, false);
 
-            itemView.setOnClickListener(view -> {
+        list.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(SELECTED_NOTE_BUNDLE, note);
+        NotesRVAdapter adapter = new NotesRVAdapter();
+        adapter.setOnNoteClicked(note -> {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(SELECTED_NOTE_BUNDLE, note);
 
-                getParentFragmentManager()
-                        .setFragmentResult(NOTE_SELECTED, bundle);
-            });
+            getParentFragmentManager()
+                    .setFragmentResult(NOTE_SELECTED, bundle);
+        });
 
-            TextView noteTitle = itemView.findViewById(R.id.note_title);
-            noteTitle.setText(note.getTitle());
-
-            TextView noteText = itemView.findViewById(R.id.note_text);
-            noteText.setText(note.getText());
-
-            TextView noteDate = itemView.findViewById(R.id.note_date);
-            noteDate.setText(note.getDate());
-
-            container.addView(itemView);
-        }
+        list.setAdapter(adapter);
+        adapter.setData(repo.getNotes());
+        adapter.notifyDataSetChanged();
     }
 }
+
