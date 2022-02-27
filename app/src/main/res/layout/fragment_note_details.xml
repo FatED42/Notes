@@ -21,29 +21,41 @@
             app:title="@string/note_details" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/note_title"
-        android:layout_width="@dimen/zero_dim"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBar"
-        tools:text="Very important note" />
+        app:layout_constraintTop_toBottomOf="@id/appBar">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/note_text"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_dim"
-        android:layout_margin="@dimen/margin"
-        android:gravity="start"
-        android:inputType="textMultiLine"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        app:layout_constraintBottom_toBottomOf="parent"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/note_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:background="@color/white"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            tools:text="Very important note" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/note_title"
-        tools:text="My very important note text with very important information of my very very important note" />
+        app:layout_constraintTop_toBottomOf="@id/note_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/note_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:background="@color/white"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            tools:text="My very important note text with very important information of my very very important note" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

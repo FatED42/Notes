@@ -3,8 +3,6 @@ package com.example.notes.ui.details;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,12 +11,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
-import com.example.notes.ui.AlertDialogFragment;
+import com.example.notes.domain.NotesRepo;
+import com.example.notes.domain.NotesRepoImpl;
 import com.example.notes.ui.NavDrawable;
 
 public class NoteDetailsFragment extends Fragment {
 
-    private static final String ARG_NOTE = "ARG_NOTE";
+    public static final String ARG_NOTE = "ARG_NOTE";
+    public static final String KEY_REQUEST = "NoteDetailsFragment_KEY_REQUEST";
+    private EditText noteTitle;
+    private EditText noteText;
+
+    private final NotesRepo repo = NotesRepoImpl.getInstance();
 
     public static NoteDetailsFragment newInstance(Note note) {
 
@@ -29,9 +33,6 @@ public class NoteDetailsFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private TextView noteTitle;
-    private EditText noteText;
 
     public NoteDetailsFragment() {
         super(R.layout.fragment_note_details);
@@ -46,35 +47,28 @@ public class NoteDetailsFragment extends Fragment {
             ((NavDrawable) requireActivity()).setAppBar(toolbar);
         }
 
-        noteTitle = view.findViewById(R.id.note_title);
+        Note note = requireArguments().getParcelable(ARG_NOTE);
+
+        noteTitle = view.findViewById(R.id.note_title_text);
+        noteTitle.setText(note.getTitle());
         noteText = view.findViewById(R.id.note_text);
+        noteText.setText(note.getText());
+
 
         toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.save_note:
-                    Toast.makeText(requireContext(), "Note saved", Toast.LENGTH_LONG).show();
-                    return true;
-                case R.id.delete_note:
-                    new AlertDialogFragment().show(getParentFragmentManager(), "AlertDialogFragment");
-                    return true;
-                case R.id.share_note:
-                    Toast.makeText(requireContext(), "Note shared", Toast.LENGTH_LONG).show();
-                    return true;
+            if (item.getItemId() == R.id.save_note) {
+
+                Note updatedNote = repo.update(note.getId(), noteTitle.getText().toString(), noteText.getText().toString());
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(ARG_NOTE, updatedNote);
+
+                getParentFragmentManager()
+                        .setFragmentResult(KEY_REQUEST, bundle);
+
             }
             return false;
         });
 
-        Bundle arguments = getArguments();
-
-        if (arguments != null && arguments.containsKey(ARG_NOTE)) {
-            Note note = arguments.getParcelable(ARG_NOTE);
-            updateNote(note);
-        }
-
-    }
-
-    private void updateNote(Note note) {
-        noteTitle.setText(note.getTitle());
-        noteText.setText(note.getText());
     }
 }

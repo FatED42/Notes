@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Notes</string>
     <string name="save_note">Save icon</string>
-    <string name="delete_note">Delete note</string>
+    <string name="delete_note">Delete</string>
     <string name="share_note">Share note</string>
     <string name="note_details">Note details</string>
     <string name="notes_list">Notes list</string>

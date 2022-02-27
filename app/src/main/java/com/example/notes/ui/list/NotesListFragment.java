@@ -1,10 +1,10 @@
 package com.example.notes.ui.list;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
 import com.example.notes.domain.Note;
-import com.example.notes.domain.NotesRepo;
 import com.example.notes.domain.NotesRepoImpl;
 import com.example.notes.ui.NavDrawable;
+import com.example.notes.ui.details.NoteDetailsFragment;
 
 import java.util.List;
 
@@ -26,21 +26,13 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public static final String NOTE_SELECTED = "NOTE_SELECTED";
     public static final String SELECTED_NOTE_BUNDLE = "SELECTED_NOTE_BUNDLE";
 
-    private NotesRepo repo = new NotesRepoImpl();
     private NotesListPresenter presenter;
     private RecyclerView list;
+    private NotesRVAdapter adapter;
+    private ProgressBar progressBar;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        presenter = new NotesListPresenter(this, NotesRepoImpl.getInstance());
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+    public NotesListFragment() {
+        super(R.layout.fragment_notes_list);
     }
 
     @Override
@@ -48,6 +40,13 @@ public class NotesListFragment extends Fragment implements NotesListView {
         super.onViewCreated(view, savedInstanceState);
 
         list = view.findViewById(R.id.list);
+        progressBar = view.findViewById(R.id.progress_bar);
+
+        presenter = new NotesListPresenter(this, NotesRepoImpl.getInstance());
+        adapter = new NotesRVAdapter(this);
+
+        list.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        list.setAdapter(adapter);
 
         Toolbar toolbar = view.findViewById(R.id.notes_list_toolbar);
         if (requireActivity() instanceof NavDrawable) {
@@ -56,10 +55,32 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_note) {
-                Toast.makeText(requireContext(), "Note added", Toast.LENGTH_LONG).show();
+                presenter.addNote();
                 return true;
             }
             return false;
+        });
+
+        adapter.setOnNoteClicked(new NotesRVAdapter.OnNoteClicked() {
+            @Override
+            public void onNoteClicked(Note note) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(SELECTED_NOTE_BUNDLE, note);
+                getParentFragmentManager()
+                        .setFragmentResult(NOTE_SELECTED, bundle);
+            }
+
+            @Override
+            public void onNoteLongClicked(Note note, int position) {
+                presenter.setSelectedNote(note);
+                presenter.setSelectedNoteIndex(position);
+            }
+        });
+
+        getParentFragmentManager().setFragmentResultListener(NoteDetailsFragment.KEY_REQUEST, getViewLifecycleOwner(), (requestKey, result) -> {
+            Note note = result.getParcelable(NoteDetailsFragment.ARG_NOTE);
+            adapter.updateNote(note, presenter.getSelectedNoteIndex());
+            adapter.notifyItemChanged(presenter.getSelectedNoteIndex());
         });
 
         presenter.requestNotes();
@@ -67,21 +88,45 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
     @Override
     public void showNotes(List<Note> notes) {
-
-        list.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-
-        NotesRVAdapter adapter = new NotesRVAdapter();
-        adapter.setOnNoteClicked(note -> {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(SELECTED_NOTE_BUNDLE, note);
-
-            getParentFragmentManager()
-                    .setFragmentResult(NOTE_SELECTED, bundle);
-        });
-
-        list.setAdapter(adapter);
-        adapter.setData(repo.getNotes());
+        adapter.setData(notes);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addNote(Note note) {
+        int index = adapter.addNote(note);
+        adapter.notifyItemInserted(index);
+        list.smoothScrollToPosition(index);
+    }
+
+    @Override
+    public void removeNote(Note note, int index) {
+        adapter.removeNote(index);
+        adapter.notifyItemRemoved(index);
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.menu_notes_list_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_delete) {
+            presenter.deleteNote();
+        }
+        return super.onContextItemSelected(item);
     }
 }
 
