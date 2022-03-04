@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 public class NotesRepoImpl implements NotesRepo {
 
     private static final NotesRepo INSTANCE = new NotesRepoImpl();
+
     public static NotesRepo getInstance() {
         return INSTANCE;
     }
@@ -21,7 +22,7 @@ public class NotesRepoImpl implements NotesRepo {
 
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
-    List<Note> notes = new ArrayList<>();
+    private final List<Note> notes = new ArrayList<>();
 
     public NotesRepoImpl() {
         notes.add(new Note(UUID.randomUUID().toString(), "Первая заметка", "Текст первой заметки. Не очень длинный, но интересный", new Date()));

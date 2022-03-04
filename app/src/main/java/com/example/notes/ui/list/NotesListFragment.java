@@ -5,6 +5,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +18,11 @@ import com.example.notes.R;
 import com.example.notes.domain.Note;
 import com.example.notes.domain.NotesRepoImpl;
 import com.example.notes.ui.NavDrawable;
-import com.example.notes.ui.details.NoteDetailsFragment;
+import com.example.notes.ui.details.NoteEditBottomSheetFragment;
 
 import java.util.List;
 
 public class NotesListFragment extends Fragment implements NotesListView {
-
-    public static final String NOTE_SELECTED = "NOTE_SELECTED";
-    public static final String SELECTED_NOTE_BUNDLE = "SELECTED_NOTE_BUNDLE";
 
     private NotesListPresenter presenter;
     private RecyclerView list;
@@ -64,11 +62,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
         adapter.setOnNoteClicked(new NotesRVAdapter.OnNoteClicked() {
             @Override
             public void onNoteClicked(Note note) {
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.notes_container, NoteDetailsFragment.newInstance(presenter.getSelectedNote()))
-                        .addToBackStack("")
-                        .commit();
+                Toast.makeText(requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -78,8 +72,8 @@ public class NotesListFragment extends Fragment implements NotesListView {
             }
         });
 
-        getParentFragmentManager().setFragmentResultListener(NoteDetailsFragment.KEY_REQUEST, getViewLifecycleOwner(), (requestKey, result) -> {
-            Note note = result.getParcelable(NoteDetailsFragment.ARG_NOTE);
+        getParentFragmentManager().setFragmentResultListener(NoteEditBottomSheetFragment.KEY_REQUEST, getViewLifecycleOwner(), (requestKey, result) -> {
+            Note note = result.getParcelable(NoteEditBottomSheetFragment.ARG_NOTE);
             adapter.updateNote(note, presenter.getSelectedNoteIndex());
             adapter.notifyItemChanged(presenter.getSelectedNoteIndex());
         });
@@ -124,8 +118,15 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_delete) {
-            presenter.deleteNote();
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                presenter.deleteNote();
+                return true;
+
+            case R.id.action_edit:
+                NoteEditBottomSheetFragment.newInstance(presenter.getSelectedNote())
+                        .show(getParentFragmentManager(), "NoteEditBottomSheetFragment");
+                return true;
         }
         return super.onContextItemSelected(item);
     }

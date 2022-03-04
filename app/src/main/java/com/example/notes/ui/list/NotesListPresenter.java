@@ -9,7 +9,6 @@ public class NotesListPresenter {
     private final NotesRepo repo;
 
     private Note selectedNote;
-
     private int selectedNoteIndex;
 
     public NotesListPresenter(NotesListView view, NotesRepo repo) {

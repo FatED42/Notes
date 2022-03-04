@@ -9,9 +9,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.notes.R;
-import com.example.notes.domain.Note;
-import com.example.notes.ui.details.NoteDetailsFragment;
-import com.example.notes.ui.list.NotesListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class NotesActivity extends AppCompatActivity implements NavDrawable {
