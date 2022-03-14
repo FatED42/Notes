@@ -9,9 +9,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.notes.R;
-import com.example.notes.domain.Note;
-import com.example.notes.ui.details.NoteDetailsFragment;
-import com.example.notes.ui.list.NotesListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class NotesActivity extends AppCompatActivity implements NavDrawable {
@@ -39,15 +36,6 @@ public class NotesActivity extends AppCompatActivity implements NavDrawable {
                     return true;
             }
             return false;
-        });
-
-        getSupportFragmentManager().setFragmentResultListener(NotesListFragment.NOTE_SELECTED, this, (requestKey, result) -> {
-            Note note = result.getParcelable(NotesListFragment.SELECTED_NOTE_BUNDLE);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.notes_container, NoteDetailsFragment.newInstance(note))
-                    .addToBackStack("")
-                    .commit();
         });
     }
 

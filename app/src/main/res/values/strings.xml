@@ -24,4 +24,6 @@
     <string name="button_no">No</string>
     <string name="note_deleted">Note deleted</string>
     <string name="note_not_deleted">Note not deleted</string>
+    <string name="edit_note">Edit</string>
+    <string name="btn_save">Save</string>
 </resources>

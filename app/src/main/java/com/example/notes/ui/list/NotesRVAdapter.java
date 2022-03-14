@@ -20,9 +20,9 @@ import java.util.Locale;
 
 public class NotesRVAdapter extends RecyclerView.Adapter<NotesRVAdapter.NoteViewHolder> {
 
-    private List<Note> data = new ArrayList<>();
+    private final List<Note> data = new ArrayList<>();
     private final SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-    private Fragment fragment;
+    private final Fragment fragment;
     private OnNoteClicked onNoteClicked;
 
     public NotesRVAdapter(Fragment fragment) {

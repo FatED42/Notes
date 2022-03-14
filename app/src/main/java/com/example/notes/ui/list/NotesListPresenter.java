@@ -1,10 +1,7 @@
 package com.example.notes.ui.list;
 
-import com.example.notes.domain.Callback;
 import com.example.notes.domain.Note;
 import com.example.notes.domain.NotesRepo;
-
-import java.util.List;
 
 public class NotesListPresenter {
 
@@ -13,7 +10,6 @@ public class NotesListPresenter {
 
     private Note selectedNote;
     private int selectedNoteIndex;
-
 
     public NotesListPresenter(NotesListView view, NotesRepo repo) {
         this.view = view;
@@ -43,6 +39,10 @@ public class NotesListPresenter {
             view.hideProgress();
             view.removeNote(selectedNote, selectedNoteIndex);
         });
+    }
+
+    public Note getSelectedNote() {
+        return selectedNote;
     }
 
     public void setSelectedNote(Note selectedNote) {
