@@ -15,10 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
+import com.example.notes.domain.FirestoreNotesRepo;
 import com.example.notes.domain.Note;
-import com.example.notes.domain.NotesRepoImpl;
-import com.example.notes.ui.NavDrawable;
-import com.example.notes.ui.details.NoteEditBottomSheetFragment;
+import com.example.notes.ui.edit.AddNotePresenter;
+import com.example.notes.ui.edit.EditNoteBottomSheetFragment;
+import com.example.notes.ui.edit.EditNotePresenter;
 
 import java.util.List;
 
@@ -40,20 +41,18 @@ public class NotesListFragment extends Fragment implements NotesListView {
         list = view.findViewById(R.id.list);
         progressBar = view.findViewById(R.id.progress_bar);
 
-        presenter = new NotesListPresenter(this, NotesRepoImpl.getInstance());
+        presenter = new NotesListPresenter(this, FirestoreNotesRepo.INSTANCE);
         adapter = new NotesRVAdapter(this);
 
         list.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         list.setAdapter(adapter);
 
         Toolbar toolbar = view.findViewById(R.id.notes_list_toolbar);
-        if (requireActivity() instanceof NavDrawable) {
-            ((NavDrawable) requireActivity()).setAppBar(toolbar);
-        }
 
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_note) {
-                presenter.addNote();
+                EditNoteBottomSheetFragment.newAddInstance()
+                        .show(getParentFragmentManager(), "EditNoteBottomSheetFragment");
                 return true;
             }
             return false;
@@ -72,10 +71,17 @@ public class NotesListFragment extends Fragment implements NotesListView {
             }
         });
 
-        getParentFragmentManager().setFragmentResultListener(NoteEditBottomSheetFragment.KEY_REQUEST, getViewLifecycleOwner(), (requestKey, result) -> {
-            Note note = result.getParcelable(NoteEditBottomSheetFragment.ARG_NOTE);
+        getParentFragmentManager().setFragmentResultListener(EditNotePresenter.KEY_UPDATE, getViewLifecycleOwner(), (requestKey, result) -> {
+            Note note = result.getParcelable(EditNoteBottomSheetFragment.ARG_NOTE);
             adapter.updateNote(note, presenter.getSelectedNoteIndex());
             adapter.notifyItemChanged(presenter.getSelectedNoteIndex());
+        });
+
+        getParentFragmentManager().setFragmentResultListener(AddNotePresenter.KEY_ADD, getViewLifecycleOwner(), (requestKey, result) -> {
+            Note note = result.getParcelable(EditNoteBottomSheetFragment.ARG_NOTE);
+            int index = adapter.addNote(note);
+            adapter.notifyItemInserted(index);
+            list.smoothScrollToPosition(index);
         });
 
         presenter.requestNotes();
@@ -85,13 +91,6 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public void showNotes(List<Note> notes) {
         adapter.setData(notes);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void addNote(Note note) {
-        int index = adapter.addNote(note);
-        adapter.notifyItemInserted(index);
-        list.smoothScrollToPosition(index);
     }
 
     @Override
@@ -124,7 +123,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
                 return true;
 
             case R.id.action_edit:
-                NoteEditBottomSheetFragment.newInstance(presenter.getSelectedNote())
+                EditNoteBottomSheetFragment.newUpdateInstance(presenter.getSelectedNote())
                         .show(getParentFragmentManager(), "NoteEditBottomSheetFragment");
                 return true;
         }

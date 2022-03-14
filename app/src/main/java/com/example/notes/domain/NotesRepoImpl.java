@@ -75,7 +75,7 @@ public class NotesRepoImpl implements NotesRepo {
     }
 
     @Override
-    public Note update(String id, String newTitle, String newText) {
+    public void update(String id, String newTitle, String newText, Callback<Note> callback) {
         Note toChangeNote = null;
         int indexToChangeNote = -1;
 
@@ -89,6 +89,6 @@ public class NotesRepoImpl implements NotesRepo {
 
         Note newNote = new Note(toChangeNote.getId(), newTitle, newText, toChangeNote.getCreatedAt());
         notes.set(indexToChangeNote, newNote);
-        return newNote;
+        callback.onSuccess(newNote);
     }
 }

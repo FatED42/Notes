@@ -26,4 +26,6 @@
     <string name="note_not_deleted">Note not deleted</string>
     <string name="edit_note">Edit</string>
     <string name="btn_save">Save</string>
+    <string name="btn_update">Update</string>
+    <string name="action_list">Notes</string>
 </resources>

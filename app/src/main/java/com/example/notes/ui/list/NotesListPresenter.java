@@ -25,14 +25,6 @@ public class NotesListPresenter {
         });
     }
 
-    public void addNote() {
-        view.showProgress();
-        repo.add("My new note here", "Text about my new note is very important", data -> {
-            view.hideProgress();
-            view.addNote(data);
-        });
-    }
-
     public void deleteNote() {
         view.showProgress();
         repo.delete(selectedNote, data -> {

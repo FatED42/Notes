@@ -10,6 +10,6 @@ public interface NotesRepo {
 
     void delete(Note note, Callback<Void> callback);
 
-    Note update(String id, String newTitle, String newText);
+    void update(String id, String newTitle, String newText, Callback<Note> callback);
 
 }
